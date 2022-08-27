@@ -396,7 +396,8 @@ VERSION should be a list of (major-version minor-version patch)."
          (kubel--age-to-secs age2)))))
 
 (defun kubel--column-entry (entrylist)
-  "Return a function of colnum to retrieve an entry in a given column for ENTRYLIST."
+  "Return a function of colnum to retrieve an entry in a given column for
+ENTRYLIST."
   (function
    (lambda (colnum)
      (let* ((name (kubel--column-header entrylist colnum))
@@ -569,7 +570,8 @@ Strip the `*` prefix if the resource is selected"
     (list "--selector" kubel-selector)))
 
 (defun kubel--get-command-prefix ()
-  "Utility function to prefix the kubectl command with proper context and namespace."
+  "Utility function to prefix the kubectl command with proper context and
+namespace."
   (mapconcat 'identity (append (list kubel-kubectl) (kubel--get-context-namespace) (kubel--get-selector)) " "))
 
 (defun kubel--get-containers (pod-name &optional type)
