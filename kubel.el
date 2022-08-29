@@ -412,10 +412,11 @@ ENTRYLIST."
   "Get the list format.
 
 ENTRYLIST is the output of the parsed body."
-  (defun kubel--get-column-entry (colnum)
-    (let ((kubel--get-entry (kubel--column-entry entrylist)))
-      (funcall kubel--get-entry colnum)))
-  (cl-map 'vector #'kubel--get-column-entry (number-sequence 0 (- (kubel--ncols entrylist) 1))))
+  (let ((kubel--get-column-entry
+         (lambda (colnum)
+           (let ((kubel--get-entry (kubel--column-entry entrylist)))
+             (funcall kubel--get-entry colnum)))))
+    (cl-map 'vector kubel--get-column-entry (number-sequence 0 (- (kubel--ncols entrylist) 1)))))
 
 (defun kubel--update-selected-items (entries)
   "Check that all selected items still exist.
