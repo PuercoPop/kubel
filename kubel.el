@@ -100,6 +100,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
 (require 'transient)
 (require 'dash)
 (require 's)
