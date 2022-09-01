@@ -33,6 +33,14 @@ Get it from Melpa, or copy and load the `kubel.el` file.
 If you want to have the evil compatibility package, get it from Melpa as well or
 load the `kubel-evil.el` file.
 
+If you want vterm to be available as a shell when using `exec`, call
+`(kubel-vterm-setup)`. ej. one uses use-package
+
+```elisp
+(use-package kubel
+  :config (kubel-vterm-setup))
+```
+
 ## Usage
 
 To list the pods in your current context and namespace, call
