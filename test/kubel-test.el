@@ -31,6 +31,15 @@
 Server Version: version.Info{Major:\"1\", Minor:\"12\", GitVersion:\"v1.12.7\", GitCommit:\"6f482974b76db3f1e0f5d24605a9d1d38fad9a2b\", GitTreeState:\"clean\", BuildDate:\"2019-03-25T02:41:57Z\", GoVersion:\"go1.10.8\", Compiler:\"gc\", Platform:\"linux/amd64\"}")))
     (should (equal '(1 14 10) (kubel-kubernetes-version)))))
 
+(ert-deftest kubel--test-age-to-secs ()
+  (should (equal (kubel--age-to-secs "1d2h3m4s") 93784))
+  (should (equal (kubel--age-to-secs "2h3m4s") 7384))
+  (should (equal (kubel--age-to-secs "3m4s") 184))
+  (should (equal (kubel--age-to-secs "4s") 4))
+  (should (equal (kubel--age-to-secs "2h") 7200))
+  (should (equal (kubel--age-to-secs "") 0))
+  (should (equal (kubel--age-to-secs "invalid") 0)))
+
 ;; (ert "kubel--test-.*")
 
 (provide 'kubel-test)

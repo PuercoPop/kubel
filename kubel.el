@@ -379,14 +379,10 @@ VERSION should be a list of (major-version minor-version patch)."
                  (opt (group (one-or-more digit)) "m")
                  (opt (group (one-or-more digit)) "s")
                  eol)))
-    (if (string-match rex age)
-        (-sum (--map-indexed
-               (* (--if-let (match-string (1+ it-index) age)
-                      (string-to-number it)
-                    0)
-                  it)
-               '(86400 3600 60 1)))
-      0)))
+    (string-match rex age)
+    (cl-loop for v in '(86400 3600 60 1)
+             for ix from 1
+             sum (* v (string-to-number (or (match-string ix age) "0"))))))
 
 (defun kubel--make-age-comparator (colnum)
   "Return a function that compares two ages at given column COLNUM."
