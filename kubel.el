@@ -853,15 +853,24 @@ ARGS is the arguments list from transient."
     (kubel--add-namespace-to-history namespace)
     (kubel last-default-directory)))
 
+(defun kubel--list-contexts ()
+  (split-string (kubel--exec-to-string (format "%s config view -o jsonpath='{.contexts[*].name}'" kubel-kubectl)) " "))
+
+(defun kubel-use-context ()
+  "Sets the current-context."
+  (interactive)
+  (let ((context (completing-read "Select context: "
+                                  (kubel--list-contexts)))
+        (cmd (format "%s config use-context %s" kubel-kubel context)))
+    (shell-command cmd t "*kubel stderr*")))
+
 (defun kubel-set-context ()
   "Set the context."
   (interactive)
   (let* ((kubel--buffer (get-buffer (kubel--buffer-name)))
          (last-default-directory (when kubel--buffer (with-current-buffer kubel--buffer default-directory))))
     (setq kubel-context
-          (completing-read
-           "Select context: "
-           (split-string (kubel--exec-to-string (format "%s config view -o jsonpath='{.contexts[*].name}'" kubel-kubectl)) " ")))
+          (completing-read "Select context: " (kubel--list-contexts)))
     (when kubel--buffer (kill-buffer kubel--buffer));; kill buffer for previous context if possible
     (kubel--invalidate-context-caches)
     (setq kubel-namespace "default")
