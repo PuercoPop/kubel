@@ -1013,6 +1013,15 @@ P can be a single number or a localhost:container port pair."
          (eshell-buffer-name (format "*kubel - eshell - %s@%s*" container pod)))
     (eshell)))
 
+(defun kubel-exec-copy-clipboard ()
+  "Copies the command to exec into the pod under the cursor to the clipboard."
+  (interactive)
+  (let* ((con-pod (kubel--get-container-under-cursor))
+         (container (car con-pod))
+         (pod (cdr con-pod))
+         (command (format "%s exec %s -c %s -i -t -- /usr/bin/env sh" (kubel--get-command-prefix) pod container)))
+    (kill-new command)))
+
 (defun kubel-exec-ansi-term-pod ()
   "Exec into the pod under the cursor -> `ansi-term'."
   (interactive)
@@ -1171,6 +1180,7 @@ RESET is to be called if the search is nil after the first attempt."
 (transient-define-prefix kubel-exec-popup ()
   "Kubel Exec Menu"
   ["Actions"
+   ("w" "Copy to clipboard" kubel-exec-copy-clipboard)
    ("!" "Shell command" kubel-exec-pod-by-shell-command)
    ("d" "Dired" kubel-exec-pod)
    ("e" "Eshell" kubel-exec-eshell-pod)
